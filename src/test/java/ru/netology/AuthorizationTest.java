@@ -18,7 +18,7 @@ public class AuthorizationTest {
         @Test
         public void shouldActiveUser() {
             UserInfo user = DataGenerator.generateUser("active");
-            Registration.setUpAll(user);
+            Registration.registerUser(user);
             $x("//input[@name= \"login\"]").val(user.getLogin());
             $x("//input[@name= \"password\"]").val(user.getPassword());
             $x("//button[@data-test-id=\"action-login\"]").click();
@@ -29,7 +29,7 @@ public class AuthorizationTest {
         @Test
         public void shouldBlockedUser() {
             UserInfo user = DataGenerator.generateUser("blocked");
-            Registration.setUpAll(user);
+            Registration.registerUser(user);
             $x("//input[@name= \"login\"]").val(user.getLogin());
             $x("//input[@name= \"password\"]").val(user.getPassword());
             $x("//button[@data-test-id=\"action-login\"]").click();
@@ -40,8 +40,8 @@ public class AuthorizationTest {
         @Test
         public void shouldSadPathInvalidLogin() {
             UserInfo user = DataGenerator.generateUser("blocked");
-            Registration.setUpAll(user);
-            $x("//input[@name= \"login\"]").val("Petya");
+            Registration.registerUser(user);
+            $x("//input[@name= \"login\"]").val(DataGenerator.generateLogin());
             $x("//input[@name= \"password\"]").val(user.getPassword());
             $x("//button[@data-test-id=\"action-login\"]").click();
             $x("//div[@class =\"notification__content\"] ").shouldBe(visible);
@@ -50,11 +50,10 @@ public class AuthorizationTest {
 
         @Test
         public void shouldSadPathInvalidPassword() {
-//        Configuration.holdBrowserOpen = true;
             UserInfo user = DataGenerator.generateUser("blocked");
-            Registration.setUpAll(user);
+            Registration.registerUser(user);
             $x("//input[@name= \"login\"]").val(user.getLogin());
-            $x("//input[@name= \"password\"]").val("12345");
+            $x("//input[@name= \"password\"]").val(DataGenerator.generatePassword());
             $x("//button[@data-test-id=\"action-login\"]").click();
             $x("//div[@class =\"notification__content\"] ").shouldBe(visible);
             $x("//div[@class =\"notification__content\"] ").shouldBe(text("Неверно указан логин или пароль"));

@@ -17,12 +17,10 @@ public class Registration {
             .log(LogDetail.ALL)
             .build();
 
-    public static void setUpAll(UserInfo user) {
-        Gson gson = new Gson();
-        String authUser = gson.toJson(user);
+    public static void registerUser(UserInfo user) {
         given()
                 .spec(requestSpec)
-                .body(authUser)
+                .body(user)
                 .when()
                 .post("/api/system/users")
                 .then()
